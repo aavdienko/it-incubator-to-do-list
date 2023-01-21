@@ -47,6 +47,16 @@ const getFilteredTasksForRender =
 const removeTask = (taskId: string) => {
   setTasks(tasks.filter(task => task.id !== taskId))
 }
+
+const addTask = (title: string) => {
+  const newTask: TaskType = {
+    id: v1(),
+    title: title,
+    isDone: false,
+  }
+  setTasks([...tasks, newTask])
+}
+
 const filteredTasksForRender = getFilteredTasksForRender(tasks, filter)
 
 
@@ -58,6 +68,7 @@ const filteredTasksForRender = getFilteredTasksForRender(tasks, filter)
         tasks={filteredTasksForRender} 
         removeTask={removeTask}
         changeFilter={changeFilter}
+        addTask={addTask}
         />
       {/* <TodoList title={todoListTitle2} tasks={tasks2} /> */}
     </div>
