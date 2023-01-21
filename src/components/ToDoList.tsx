@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent, FC, useState } from 'react';
 import { FilterValuesType } from '../App';
 
 export type TaskType = {
@@ -38,6 +38,22 @@ const TodoList: FC<TodoListPropsType> = (props) => {
       props.addTask(title)
       setTitle('')
     }
+    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      setTitle(event.currentTarget.value)
+    }
+    const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+      event.key === 'Enter' && addTask()
+    }
+    
+    // const onClickHandlerAll = () => props.changeFilter('all')
+    // const onClickHandlerActive = () => props.changeFilter('active')
+    // const onClickHandlerCompleted = () => props.changeFilter('completed')
+
+    const handlerCreator = (filter: FilterValuesType) => {
+      return () => props.changeFilter(filter)
+    } 
+    // данная функция возвращает нам калбэки, чтобы не делать одникаовые функции как описано выше
+    // несмотря на то, что на onClik вешаем функцию и сразу же ее вызываем, чтобы она создала / вернула калбэк для копки
 
   return (
     <div>
@@ -46,17 +62,17 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         <input 
           type='text'
           value={title} 
-          onChange={(event) => setTitle(event.currentTarget.value)}
-          onKeyDown={(event) => event.key === 'Enter' && addTask()}/>
+          onChange={onChangeHandler}
+          onKeyDown={onKeyDownHandler}/>
         <button onClick={addTask}>+</button>
       </div>
       <ul>
         {tasksList}
       </ul>
       <div>
-        <button onClick={() => props.changeFilter('all')}>All</button>
-        <button onClick={() => props.changeFilter('active')}>Active</button>
-        <button onClick={() => props.changeFilter('completed')}>Completed</button>
+        <button onClick={handlerCreator('all')}>All</button>
+        <button onClick={handlerCreator('active')}>Active</button>
+        <button onClick={handlerCreator('completed')}>Completed</button>
       </div>
     </div>
   );
