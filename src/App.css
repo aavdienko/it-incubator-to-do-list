@@ -6,3 +6,23 @@
 .App > div {
   margin-right: 50px;
 }
+
+.is-done {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.input-error {
+  border: 2px red sold;
+}
+
+.active-btn {
+  background-color: blue;
+  color: white
+}
+
+
+
+/* .error-message {
+  color: red;
+} */
