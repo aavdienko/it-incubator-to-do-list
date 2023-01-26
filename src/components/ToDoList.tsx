@@ -53,6 +53,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     }
 
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+      error && setError(false)
       setTitle(event.currentTarget.value)
     }
     const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -68,6 +69,8 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     // данная функция возвращает нам калбэки, чтобы не делать одникаовые функции как описано выше
     // несмотря на то, что на onClik вешаем функцию и сразу же ее вызываем, чтобы она создала / вернула калбэк для копки
 
+    const errorMessage = error && <p style={{color: "red", fontWeight: 'bold' }}>Title is required</p>
+
   return (
     <div>
       <h3>{props.title}</h3>
@@ -79,7 +82,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
           onKeyDown={onKeyDownHandler}
           className={error ? 'input-error' : ''}/>
         <button onClick={addTask}>+</button>
-        {error && <p style={{color: "red", fontWeight: 'bold' }}>Title is required</p>}
+        {errorMessage}
       </div>
       <ul>
         {tasksList}

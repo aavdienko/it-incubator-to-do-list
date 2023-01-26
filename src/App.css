@@ -13,14 +13,13 @@
 }
 
 .input-error {
-  border: 2px red sold;
+  border: 2px red solid;
 }
 
 .active-btn {
   background-color: blue;
   color: white
 }
-
 
 
 /* .error-message {
