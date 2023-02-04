@@ -8,15 +8,20 @@ export type TaskType = {
   isDone: boolean
 }
 
+export type TodlistTaskType = {
+  [id: string]: Array<TaskType>
+}
 
 export type TodoListPropsType = {
+  id: string
   title: string
   tasks: Array<TaskType>
   filter: FilterValuesType
-  removeTask: (taskId: string) => void
-  changeFilter: (filter: FilterValuesType) => void
-  addTask: (title: string) => void
-  changeTaskStatus: (title: string, newIsDone: boolean) => void
+  removeTask: (todolistId: string, taskId: string) => void
+  changeFilter: (todolistId: string, filter: FilterValuesType) => void
+  addTask: (todolistId: string, title: string) => void
+  changeTaskStatus: (todolistId: string, title: string, newIsDone: boolean) => void
+  removeTodolist: (todolistId: string) => void
 }
 
 const TodoList: FC<TodoListPropsType> = (props) => {
@@ -26,8 +31,8 @@ const TodoList: FC<TodoListPropsType> = (props) => {
   
   let tasksList = props.tasks.length
   ? props.tasks.map((task:TaskType) => {
-    const removeTask = () => props.removeTask(task.id)
-    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => { props.changeTaskStatus(task.id, e.currentTarget.checked)
+    const removeTask = () => props.removeTask(props.id, task.id)
+    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => { props.changeTaskStatus(props.id, task.id, e.currentTarget.checked)
     }
       return (
         <li key={task.id} className={task.isDone ? 'is-done' : ''}>
@@ -45,7 +50,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     const addTask = () => {
       const trimedTitle = title.trim()
       if (trimedTitle !== '') {
-        props.addTask(trimedTitle)
+        props.addTask(props.id, trimedTitle)
       } else {
         setError(true)
       }
@@ -63,8 +68,8 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     // const onClickHandlerActive = () => props.changeFilter('active')
     // const onClickHandlerCompleted = () => props.changeFilter('completed')
 
-    const handlerCreator = (filter: FilterValuesType) => {
-      return () => props.changeFilter(filter)
+    const handlerCreator = ( filter: FilterValuesType) => {
+      return () => props.changeFilter(props.id, filter)
     } 
     // данная функция возвращает нам калбэки, чтобы не делать одникаовые функции как описано выше
     // несмотря на то, что на onClik вешаем функцию и сразу же ее вызываем, чтобы она создала / вернула калбэк для копки
@@ -73,7 +78,11 @@ const TodoList: FC<TodoListPropsType> = (props) => {
 
   return (
     <div>
-      <h3>{props.title}</h3>
+      <h3>
+        {props.title}
+        <button onClick={()=>props.removeTodolist(props.id)}>X</button>
+      </h3>
+
       <div>
         <input 
           type='text'
