@@ -1,6 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, FC, useState } from 'react';
 import { FilterValuesType } from '../App';
 import './../App.css'
+import { SuperInput } from './SuperInput';
 
 export type TaskType = {
   id: string
@@ -26,8 +27,8 @@ export type TodoListPropsType = {
 
 const TodoList: FC<TodoListPropsType> = (props) => {
 
-  const [title, setTitle] = useState<string>('')
-  const [error, setError] = useState<boolean>(false)
+  // const [title, setTitle] = useState<string>('')
+  // const [error, setError] = useState<boolean>(false)
   
   let tasksList = props.tasks.length
   ? props.tasks.map((task:TaskType) => {
@@ -47,23 +48,24 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     })
   : <span>Your taskslist is empty</span>
 
-    const addTask = () => {
-      const trimedTitle = title.trim()
-      if (trimedTitle !== '') {
-        props.addTask(props.id, trimedTitle)
-      } else {
-        setError(true)
-      }
-      setTitle('')
-    }
+    // Вынесли в SuperInput
+    // const addTask = () => {
+    //   const trimedTitle = title.trim()
+    //   if (trimedTitle !== '') {
+    //     props.addTask(props.id, trimedTitle)
+    //   } else {
+    //     setError(true)
+    //   }
+    //   setTitle('')
+    // }
 
-    const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-      error && setError(false)
-      setTitle(event.currentTarget.value)
-    }
-    const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-      event.key === 'Enter' && addTask()
-    }
+    // const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    //   error && setError(false)
+    //   setTitle(event.currentTarget.value)
+    // }
+    // const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    //   event.key === 'Enter' && addTask()
+    // }
     // const onClickHandlerAll = () => props.changeFilter('all')
     // const onClickHandlerActive = () => props.changeFilter('active')
     // const onClickHandlerCompleted = () => props.changeFilter('completed')
@@ -74,7 +76,12 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     // данная функция возвращает нам калбэки, чтобы не делать одникаовые функции как описано выше
     // несмотря на то, что на onClik вешаем функцию и сразу же ее вызываем, чтобы она создала / вернула калбэк для копки
 
-    const errorMessage = error && <p style={{color: "red", fontWeight: 'bold' }}>Title is required</p>
+    // const errorMessage = error && <p style={{color: "red", fontWeight: 'bold' }}>Title is required</p>
+
+    const addTaskHandler = (title: string) => {
+
+      return props.addTask(props.id, title)
+    }
 
   return (
     <div>
@@ -82,8 +89,9 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         {props.title}
         <button onClick={()=>props.removeTodolist(props.id)}>X</button>
       </h3>
-
-      <div>
+      <SuperInput 
+        callBack={addTaskHandler}/>
+      {/* <div>
         <input 
           type='text'
           value={title} 
@@ -92,7 +100,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
           className={error ? 'input-error' : ''}/>
         <button onClick={addTask}>+</button>
         {errorMessage}
-      </div>
+      </div> */}
       <ul>
         {tasksList}
       </ul>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { v1 } from 'uuid';
 import './App.css';
+import { SuperInput } from './components/SuperInput';
 import TodoList, { TaskType, TodlistTaskType } from './components/ToDoList';
 
 // Перенесли в useState - удалить после выполнения домашки второй недели
@@ -61,6 +62,7 @@ const App = () => {
   };
 
   const addTask = (todolistId: string, title: string) => {
+
     const newTask: TaskType = {
       id: v1(),
       title: title,
@@ -81,9 +83,19 @@ const App = () => {
     console.log(tasks);
   }
 
+  
+  const addTodolist = (newTitle: string) => {
+    const newTodolistId = v1()
+    const newTodolist:TodolistsType = { id: newTodolistId, title: newTitle, filter: 'all' }
+    setTodolists([newTodolist, ...todolists])
+    setTasks({[newTodolistId]: [], ...tasks})
+  }
+
+
 
   return (
     <div className="App">
+      <SuperInput callBack={addTodolist}/>
       {todolists.map((todolist) => {
         let taskForTodolists = tasks[todolist.id];
         if (todolist.filter === 'active') {
@@ -100,7 +112,7 @@ const App = () => {
           <TodoList
             key={todolist.id}
             id={todolist.id}
-            title={todoListTitle1}
+            title={todolist.title}
             tasks={taskForTodolists}
             removeTask={removeTask}
             changeFilter={changeFilter}
