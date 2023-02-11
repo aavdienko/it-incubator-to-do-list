@@ -1,3 +1,4 @@
+import { Button } from "@mui/material"
 import { ChangeEvent, FC, KeyboardEvent, useState } from "react"
 
 type SuperInputPropsType = {
@@ -39,7 +40,8 @@ const errorMessage = error && <p style={{color: "red", fontWeight: 'bold' }}>Tit
       onChange={onChangeHandler}
       onKeyDown={onKeyDownHandler}
       className={error ? 'input-error' : ''}/>
-    <button onClick={addTask}>+</button>
+    {/* <button onClick={addTask}>+</button> */}
+    <Button variant="contained" onClick={addTask}>+</Button>
     {errorMessage}
   </div>
   )
