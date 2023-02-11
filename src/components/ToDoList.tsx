@@ -1,6 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, FC, useState } from 'react';
 import { FilterValuesType } from '../App';
 import './../App.css'
+import { EditableSpan } from './EditableSpan';
 import { SuperInput } from './SuperInput';
 
 export type TaskType = {
@@ -23,17 +24,19 @@ export type TodoListPropsType = {
   addTask: (todolistId: string, title: string) => void
   changeTaskStatus: (todolistId: string, title: string, newIsDone: boolean) => void
   removeTodolist: (todolistId: string) => void
+  editTask: (todolistId: string, taskId: string, newTitle: string) => void
+  editTodolist: (todolistId: string, newTitle: string) => void
 }
 
 const TodoList: FC<TodoListPropsType> = (props) => {
-
-  // const [title, setTitle] = useState<string>('')
-  // const [error, setError] = useState<boolean>(false)
   
   let tasksList = props.tasks.length
   ? props.tasks.map((task:TaskType) => {
     const removeTask = () => props.removeTask(props.id, task.id)
     const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => { props.changeTaskStatus(props.id, task.id, e.currentTarget.checked)
+    }
+    const editTaskHandler = (newTitle: string) => {
+      props.editTask(props.id, task.id, newTitle)
     }
       return (
         <li key={task.id} className={task.isDone ? 'is-done' : ''}>
@@ -41,7 +44,8 @@ const TodoList: FC<TodoListPropsType> = (props) => {
             type="checkbox" 
             onChange={changeTaskStatusHandler} // обращаемся к evnt для получения инфо которая будет записанна в newIsDone и засетана в стейт 
             checked={task.isDone}/>
-          <span>{task.title}</span>
+          {/* <span>{task.title}</span> */}
+          <EditableSpan title={task.title} callBack={editTaskHandler}/>
           <button onClick={removeTask}>X</button>
         </li>
       )
@@ -79,14 +83,18 @@ const TodoList: FC<TodoListPropsType> = (props) => {
     // const errorMessage = error && <p style={{color: "red", fontWeight: 'bold' }}>Title is required</p>
 
     const addTaskHandler = (title: string) => {
-
       return props.addTask(props.id, title)
+    }
+
+    const editTodolistHandler = (newTitle: string) => {
+      props.editTodolist(props.id, newTitle)
     }
 
   return (
     <div>
       <h3>
-        {props.title}
+        <EditableSpan title={props.title} callBack={editTodolistHandler}/>
+        {/* {props.title} */}
         <button onClick={()=>props.removeTodolist(props.id)}>X</button>
       </h3>
       <SuperInput 

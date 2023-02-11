@@ -1,3 +1,4 @@
+import { log } from 'console';
 import React, { useState } from 'react';
 import { v1 } from 'uuid';
 import './App.css';
@@ -91,7 +92,15 @@ const App = () => {
     setTasks({[newTodolistId]: [], ...tasks})
   }
 
+  const editTask = (todolistId: string, taskId: string, newTitle: string) => {
+    const updatedTask = {...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, title: newTitle} : task)}
+    setTasks(updatedTask)
+  }
 
+  const editTodolist = (todolistId: string, newTitle: string) => {
+    const updatedTodolist = todolists.map(todolist => todolist.id === todolistId ? {...todolist, title: newTitle} : todolist)
+    setTodolists(updatedTodolist)
+  }
 
   return (
     <div className="App">
@@ -120,6 +129,8 @@ const App = () => {
             changeTaskStatus={changeTaskStatus}
             filter={todolist.filter}
             removeTodolist={removeTodolist}
+            editTask={editTask}
+            editTodolist={editTodolist}
           />
         );
       })}
