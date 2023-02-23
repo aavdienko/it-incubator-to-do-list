@@ -1,9 +1,9 @@
-/* .App {
-  padding: 30px;
-  display: flex;
+.App {
+  /* padding: 30px;
+  display: flex; */
 }
 
-.App > div {
+/* .App > div {
   margin-right: 50px;
 }
 
@@ -19,8 +19,8 @@
 .active-btn {
   background-color: blue;
   color: white
-}
- */
+} */
+
 
 /* .error-message {
   color: red;

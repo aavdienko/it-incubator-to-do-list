@@ -1,4 +1,5 @@
-import { Button, Checkbox } from '@mui/material';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { ChangeEvent, KeyboardEvent, FC, useState } from 'react';
@@ -6,7 +7,6 @@ import { FilterValuesType } from '../App';
 import './../App.css';
 import { EditableSpan } from './EditableSpan';
 import { SuperInput } from './SuperInput';
-
 
 export type TaskType = {
   id: string;
@@ -48,7 +48,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
       };
       return (
         <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-          <Checkbox onChange={changeTaskStatusHandler} checked={task.isDone}/>
+          <Checkbox onChange={changeTaskStatusHandler} checked={task.isDone} />
           {/* <input
             type="checkbox"
             onChange={changeTaskStatusHandler} // обращаемся к evnt для получения инфо которая будет записанна в newIsDone и засетана в стейт
@@ -56,10 +56,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
           /> */}
           {/* <span>{task.title}</span> */}
           <EditableSpan title={task.title} callBack={editTaskHandler} />
-          <IconButton
-            onClick={removeTask}
-            aria-label="delete"
-          >
+          <IconButton onClick={removeTask} aria-label="delete">
             <DeleteIcon />
           </IconButton>
           {/* <button onClick={removeTask}>X</button> */}
@@ -136,7 +133,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
       <ul>{tasksList}</ul>
       <div>
         <Button
-          variant={props.filter === 'all' ? "contained" : "text"}
+          variant={props.filter === 'all' ? 'contained' : 'text'}
           className={props.filter === 'all' ? 'active-btn' : ''}
           onClick={handlerCreator('all')}
         >
@@ -144,7 +141,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         </Button>
         <Button
           color="primary"
-          variant={props.filter === 'active' ? "contained" : "text"}
+          variant={props.filter === 'active' ? 'contained' : 'text'}
           className={props.filter === 'active' ? 'active-btn' : ''}
           onClick={handlerCreator('active')}
         >
@@ -152,7 +149,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         </Button>
         <Button
           color="secondary"
-          variant={props.filter === 'completed' ? "contained" : "text"}
+          variant={props.filter === 'completed' ? 'contained' : 'text'}
           className={props.filter === 'completed' ? 'active-btn' : ''}
           onClick={handlerCreator('completed')}
         >

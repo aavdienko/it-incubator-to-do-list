@@ -1,4 +1,5 @@
-import { Button, IconButton, TextField } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
 import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
@@ -41,15 +42,15 @@ export const SuperInput: FC<SuperInputPropsType> = (props) => {
         className={error ? 'input-error' : ''}
       /> */}
       <TextField
-        id="outlined-basic" 
-        label="Item name" 
-        variant="outlined" 
+        id="standard-basic" 
+        label={error ? 'Title is required' : "Title"} // отрисовываем label или текс ошибки 
+        variant="standard"
         value={title}
         onChange={onChangeHandler}
         onKeyDown={onKeyDownHandler}
-        className={error ? 'input-error' : ''}
-        error={!!error}
-        helperText={errorMessage}
+        // className={error ? 'input-error' : ''}
+        error={!!error} // через псевдоложь меняем занчение ошибки со строки на boolean
+        // helperText={errorMessage}
       />
 
       {/* <button onClick={addTask}>+</button> */}
@@ -57,7 +58,7 @@ export const SuperInput: FC<SuperInputPropsType> = (props) => {
         onClick={addTask}
         color="success"
       >
-        <AddCircleIcon/>
+        <AddCircleIcon style={{color: 'black'}}/>
       </IconButton>
       {/* {errorMessage} */}
     </div>
