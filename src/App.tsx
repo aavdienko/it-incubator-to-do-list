@@ -1,5 +1,5 @@
 import { log } from 'console';
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import { v1 } from 'uuid';
 import './App.css';
 import { ButtonAppBar } from './components/ButtonAppBar';
@@ -8,6 +8,7 @@ import TodoList, { TaskType, TodlistTaskType } from './components/ToDoList';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import { addTodolistAC, changeTodolistFilterAC, editTodolistAC, removeTodolistAC, todolistsReducer } from './reducers/todolist-reducer';
 
 // Перенесли в useState - удалить после выполнения домашки второй недели
 // const tasks1: Array<TaskType> = [
@@ -35,7 +36,12 @@ export type TodolistsType = {
 };
 
 const App = () => {
-  const [todolists, setTodolists] = useState<Array<TodolistsType>>([
+  // const [todolists, setTodolists] = useState<Array<TodolistsType>>([
+  //   { id: TODO_LIST_ID1, title: todoListTitle1, filter: 'all' },
+  //   { id: TODO_LIST_ID2, title: todoListTitle2, filter: 'all' },
+  // ]);
+
+  const [todolists, dispatchTodolists] = useReducer(todolistsReducer, [
     { id: TODO_LIST_ID1, title: todoListTitle1, filter: 'all' },
     { id: TODO_LIST_ID2, title: todoListTitle2, filter: 'all' },
   ]);
@@ -55,12 +61,41 @@ const App = () => {
     ],
   });
 
-  const changeFilter = (todolistId: string, filter: FilterValuesType) => {
-    const newTodolist = todolists.map((todolist) =>
-      todolist.id === todolistId ? { ...todolist, filter } : todolist
-    );
-    setTodolists(newTodolist);
+  const removeTodolist = (todolistId: string) => {
+    dispatchTodolists(removeTodolistAC(todolistId))
+    // setTodolists(todolists.filter((todolist) => todolist.id !== todolistId));
+    delete tasks[todolistId];
+    console.log(tasks);
   };
+
+  const addTodolist = (newTitle: string) => {
+    const newTodolistId = v1();
+    dispatchTodolists(addTodolistAC(newTodolistId, newTitle))
+
+    // const newTodolist: TodolistsType = {
+    //   id: newTodolistId,
+    //   title: newTitle,
+    //   filter: 'all',
+    // };
+    // setTodolists([newTodolist, ...todolists]);
+    // setTasks({ [newTodolistId]: [], ...tasks });
+  }; 
+
+  const changeFilter = (todolistId: string, filter: FilterValuesType) => {
+    dispatchTodolists(changeTodolistFilterAC(todolistId, filter))
+    // const newTodolist = todolists.map((todolist) =>
+    //   todolist.id === todolistId ? { ...todolist, filter } : todolist
+    // );
+    // setTodolists(newTodolist);
+  };
+
+  const editTodolist = (todolistId: string, newTitle: string) => {
+    dispatchTodolists(editTodolistAC(todolistId, newTitle))
+    // const updatedTodolist = todolists.map((todolist) =>
+    //   todolist.id === todolistId ? { ...todolist, title: newTitle } : todolist
+    // );
+    // setTodolists(updatedTodolist);
+  };  
 
   const removeTask = (todolistId: string, taskId: string) => {
     const newTasks = tasks[todolistId].filter((el) => el.id !== taskId);
@@ -89,23 +124,6 @@ const App = () => {
     });
   };
 
-  const removeTodolist = (todolistId: string) => {
-    setTodolists(todolists.filter((todolist) => todolist.id !== todolistId));
-    delete tasks[todolistId];
-    console.log(tasks);
-  };
-
-  const addTodolist = (newTitle: string) => {
-    const newTodolistId = v1();
-    const newTodolist: TodolistsType = {
-      id: newTodolistId,
-      title: newTitle,
-      filter: 'all',
-    };
-    setTodolists([newTodolist, ...todolists]);
-    setTasks({ [newTodolistId]: [], ...tasks });
-  };
-
   const editTask = (todolistId: string, taskId: string, newTitle: string) => {
     const updatedTask = {
       ...tasks,
@@ -114,13 +132,6 @@ const App = () => {
       ),
     };
     setTasks(updatedTask);
-  };
-
-  const editTodolist = (todolistId: string, newTitle: string) => {
-    const updatedTodolist = todolists.map((todolist) =>
-      todolist.id === todolistId ? { ...todolist, title: newTitle } : todolist
-    );
-    setTodolists(updatedTodolist);
   };
 
   return (

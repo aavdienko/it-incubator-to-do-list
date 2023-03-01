@@ -47,7 +47,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         props.editTask(props.id, task.id, newTitle);
       };
       return (
-        <li key={task.id} className={task.isDone ? 'is-done' : ''}>
+        <div key={task.id} className={task.isDone ? 'is-done' : ''}>
           <Checkbox onChange={changeTaskStatusHandler} checked={task.isDone} />
           {/* <input
             type="checkbox"
@@ -60,7 +60,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
             <DeleteIcon />
           </IconButton>
           {/* <button onClick={removeTask}>X</button> */}
-        </li>
+        </div>
       );
     })
   ) : (
@@ -130,7 +130,7 @@ const TodoList: FC<TodoListPropsType> = (props) => {
         <button onClick={addTask}>+</button>
         {errorMessage}
       </div> */}
-      <ul>{tasksList}</ul>
+      <div>{tasksList}</div>
       <div>
         <Button
           variant={props.filter === 'all' ? 'contained' : 'text'}
