@@ -9,6 +9,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { addTodolistAC, changeTodolistFilterAC, editTodolistAC, removeTodolistAC, todolistsReducer } from './reducers/todolist-reducer';
+import { addTaskAC, addTasksForNewTodo, changeTaskStatusAC, editTaskAC, removeTaskAC, tasksReducer } from './reducers/tasks-reducer';
 
 // Перенесли в useState - удалить после выполнения домашки второй недели
 // const tasks1: Array<TaskType> = [
@@ -41,12 +42,27 @@ const App = () => {
   //   { id: TODO_LIST_ID2, title: todoListTitle2, filter: 'all' },
   // ]);
 
+  // const [tasks, setTasks] = useState<TodlistTaskType>({
+  //   [TODO_LIST_ID1]: [
+  //     { id: v1(), title: 'HTML&CSS', isDone: true },
+  //     { id: v1(), title: 'JS', isDone: true },
+  //     { id: v1(), title: 'ReactJS', isDone: false },
+  //     { id: v1(), title: 'CSS', isDone: false },
+  //   ],
+  //   [TODO_LIST_ID2]: [
+  //     { id: v1(), title: 'HTML&CSS', isDone: true },
+  //     { id: v1(), title: 'JS', isDone: true },
+  //     { id: v1(), title: 'ReactJS', isDone: false },
+  //     { id: v1(), title: 'CSS', isDone: false },
+  //   ],
+  // });
+
   const [todolists, dispatchTodolists] = useReducer(todolistsReducer, [
     { id: TODO_LIST_ID1, title: todoListTitle1, filter: 'all' },
     { id: TODO_LIST_ID2, title: todoListTitle2, filter: 'all' },
   ]);
 
-  const [tasks, setTasks] = useState<TodlistTaskType>({
+  const [tasks, dispatchTasks] = useReducer(tasksReducer, {
     [TODO_LIST_ID1]: [
       { id: v1(), title: 'HTML&CSS', isDone: true },
       { id: v1(), title: 'JS', isDone: true },
@@ -70,7 +86,9 @@ const App = () => {
 
   const addTodolist = (newTitle: string) => {
     const newTodolistId = v1();
+    debugger
     dispatchTodolists(addTodolistAC(newTodolistId, newTitle))
+    dispatchTasks(addTasksForNewTodo(newTodolistId))
 
     // const newTodolist: TodolistsType = {
     //   id: newTodolistId,
@@ -98,17 +116,20 @@ const App = () => {
   };  
 
   const removeTask = (todolistId: string, taskId: string) => {
-    const newTasks = tasks[todolistId].filter((el) => el.id !== taskId);
-    setTasks({ ...tasks, [todolistId]: newTasks });
+    dispatchTasks(removeTaskAC(todolistId, taskId))
+
+    // const newTasks = tasks[todolistId].filter((el) => el.id !== taskId);
+    // setTasks({ ...tasks, [todolistId]: newTasks });
   };
 
   const addTask = (todolistId: string, title: string) => {
-    const newTask: TaskType = {
-      id: v1(),
-      title: title,
-      isDone: false,
-    };
-    setTasks({ ...tasks, [todolistId]: [...tasks[todolistId], newTask] });
+    dispatchTasks(addTaskAC(todolistId, title))
+    // const newTask: TaskType = {
+    //   id: v1(),
+    //   title: title,
+    //   isDone: false,
+    // };
+    // setTasks({ ...tasks, [todolistId]: [...tasks[todolistId], newTask] });
   };
 
   const changeTaskStatus = (
@@ -116,22 +137,24 @@ const App = () => {
     taskId: string,
     newIsDone: boolean
   ) => {
-    setTasks({
-      ...tasks,
-      [todolistId]: tasks[todolistId].map((el) =>
-        el.id === taskId ? { ...el, isDone: newIsDone } : el
-      ),
-    });
+    dispatchTasks(changeTaskStatusAC(todolistId, taskId, newIsDone))
+    // setTasks({
+    //   ...tasks,
+    //   [todolistId]: tasks[todolistId].map((el) =>
+    //     el.id === taskId ? { ...el, isDone: newIsDone } : el
+    //   ),
+    // });
   };
 
   const editTask = (todolistId: string, taskId: string, newTitle: string) => {
-    const updatedTask = {
-      ...tasks,
-      [todolistId]: tasks[todolistId].map((task) =>
-        task.id === taskId ? { ...task, title: newTitle } : task
-      ),
-    };
-    setTasks(updatedTask);
+    dispatchTasks(editTaskAC(todolistId, taskId, newTitle))
+    // const updatedTask = {
+    //   ...tasks,
+    //   [todolistId]: tasks[todolistId].map((task) =>
+    //     task.id === taskId ? { ...task, title: newTitle } : task
+    //   ),
+    // };
+    // setTasks(updatedTask);
   };
 
   return (
