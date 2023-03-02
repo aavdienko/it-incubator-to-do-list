@@ -86,7 +86,6 @@ const App = () => {
 
   const addTodolist = (newTitle: string) => {
     const newTodolistId = v1();
-    debugger
     dispatchTodolists(addTodolistAC(newTodolistId, newTitle))
     dispatchTasks(addTasksForNewTodo(newTodolistId))
 
