@@ -1,20 +1,21 @@
 import { TaskType } from './../components/ToDoList';
 import { v1 } from "uuid";
 import { TodlistTaskType } from "../components/ToDoList";
+import { AddTodolistACType, ADD_TODOLIST, RemoveTodolistACType, REMOVE_TODOLIST } from './todolist-reducer';
 
-type MainActionType = RemoveTaskACType | AddTaskACType | ChangeTaskStatusAC | EditTaskACType | AddTasksForNewTodoType
+type MainActionType = RemoveTaskACType | AddTaskACType | ChangeTaskStatusAC | EditTaskACType | AddTodolistACType | RemoveTodolistACType
 
 type RemoveTaskACType = ReturnType<typeof removeTaskAC>
 type AddTaskACType = ReturnType<typeof addTaskAC>
 type ChangeTaskStatusAC = ReturnType<typeof changeTaskStatusAC>
 type EditTaskACType = ReturnType<typeof editTaskAC>
-type AddTasksForNewTodoType = ReturnType<typeof addTasksForNewTodo>
+// type AddTasksForNewTodoType = ReturnType<typeof addTasksForNewTodo>
 
 const REMOVE_TASK = 'REMOVE-TASK'
 const ADD_TASK = 'ADD-TASK'
 const CHANGE_TASK_STATUS = 'CHANGE-TASK-STATUS'
 const EDIT_TASK = 'EDIT-TASK'
-const ADD_TASK_FOR_NEW_TODO = 'ADD-TASK-FOR-NEW-TODO'
+// const ADD_TASK_FOR_NEW_TODO = 'ADD-TASK-FOR-NEW-TODO'
 
 
 export const tasksReducer = (state: TodlistTaskType, action: MainActionType): TodlistTaskType => {
@@ -36,9 +37,18 @@ export const tasksReducer = (state: TodlistTaskType, action: MainActionType): To
     case EDIT_TASK: {
       return {...state, [action.payload.todolistId]: state[action.payload.todolistId].map(task => task.id === action.payload.taskId ? {...task, title: action.payload.newTitle} : task)}
     }
-    case ADD_TASK_FOR_NEW_TODO: {
-      return { ...state, [action.payload.newTodolistId]: [ ]}
+    case ADD_TODOLIST: {
+      return {[action.payload.newTodolistId]: [], ...state }    
     }
+    case REMOVE_TODOLIST: {
+      const stateCopy = {...state}
+       delete stateCopy[action.payload.todolistId] 
+       return stateCopy
+    }    
+    
+    // case ADD_TASK_FOR_NEW_TODO: {
+    //   return { ...state, [action.payload.newTodolistId]: [ ]}
+    // }
     default: return state
   }
 }
@@ -87,11 +97,11 @@ export const editTaskAC = (todolistId: string, taskId: string, newTitle: string)
   } as const
 }
 
-export const addTasksForNewTodo = (newTodolistId: string) => {
-  return {
-    type: ADD_TASK_FOR_NEW_TODO,
-    payload: {
-      newTodolistId
-    } 
-  } as const
-}
+// export const addTasksForNewTodo = (newTodolistId: string) => {
+//   return {
+//     type: ADD_TASK_FOR_NEW_TODO,
+//     payload: {
+//       newTodolistId
+//     } 
+//   } as const
+// }

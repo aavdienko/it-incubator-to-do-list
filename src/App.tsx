@@ -9,7 +9,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { addTodolistAC, changeTodolistFilterAC, editTodolistAC, removeTodolistAC, todolistsReducer } from './reducers/todolist-reducer';
-import { addTaskAC, addTasksForNewTodo, changeTaskStatusAC, editTaskAC, removeTaskAC, tasksReducer } from './reducers/tasks-reducer';
+import { addTaskAC, changeTaskStatusAC, editTaskAC, removeTaskAC, tasksReducer } from './reducers/tasks-reducer';
 
 // Перенесли в useState - удалить после выполнения домашки второй недели
 // const tasks1: Array<TaskType> = [
@@ -85,9 +85,8 @@ const App = () => {
   };
 
   const addTodolist = (newTitle: string) => {
-    const newTodolistId = v1();
-    dispatchTodolists(addTodolistAC(newTodolistId, newTitle))
-    dispatchTasks(addTasksForNewTodo(newTodolistId))
+    dispatchTodolists(addTodolistAC(newTitle))
+
 
     // const newTodolist: TodolistsType = {
     //   id: newTodolistId,

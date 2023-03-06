@@ -1,14 +1,15 @@
+import { v1 } from "uuid";
 import { FilterValuesType, TodolistsType } from "../App";
 
 type MainActionType = RemoveTodolistACType | AddTodolistACType | ChangeTodolistFilterACType | EditTodolistACType
 
-type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>
-type AddTodolistACType = ReturnType<typeof addTodolistAC>
+export type RemoveTodolistACType = ReturnType<typeof removeTodolistAC>
+export type AddTodolistACType = ReturnType<typeof addTodolistAC>
 type ChangeTodolistFilterACType = ReturnType<typeof changeTodolistFilterAC>
 type EditTodolistACType=ReturnType<typeof editTodolistAC>
 
-const REMOVE_TODOLIST = 'REMOVE-TODOLIST'
-const ADD_TODOLIST = 'ADD-TODOLIST'
+export const REMOVE_TODOLIST = 'REMOVE-TODOLIST'
+export const ADD_TODOLIST = 'ADD-TODOLIST'
 const CHANGE_FILTER = 'CHANGE-FILTER'
 const EDIT_TODOLIST = 'EDIT-TODOLIST'
 
@@ -45,12 +46,12 @@ export const removeTodolistAC = (todolistId: string) => {
   } as const
 }
 
-export const addTodolistAC = (newTitle: string, newTodolistId: string) => {
+export const addTodolistAC = (newTitle: string) => {
   return {
     type: ADD_TODOLIST,
     payload: {
       newTitle,
-      newTodolistId
+      newTodolistId: v1()
     }
   } as const
 }

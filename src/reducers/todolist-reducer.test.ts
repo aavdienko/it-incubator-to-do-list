@@ -35,11 +35,11 @@ test('new todolist should be added', ()=>{
     { id: TODO_LIST_ID1, title: todoListTitle1, filter: 'all' },
     { id: TODO_LIST_ID2, title: todoListTitle2, filter: 'all' },]
 
-  const endState = todolistsReducer(startState, addTodolistAC(newTitle, NEW_TODOLIST_ID))
+  const endState = todolistsReducer(startState, addTodolistAC(newTitle))
 
   expect(endState.length).toBe(3)
-  expect(endState[0].id).toBe(NEW_TODOLIST_ID)
-  
+  expect(endState[0].title).toBe(newTitle)
+  expect(endState[0].id).toBeDefined()
 })
 
 test('filter for correct todolist should be changed', ()=>{
