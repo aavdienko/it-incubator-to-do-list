@@ -37,7 +37,6 @@ export type TodoListPropsType = {
 };
 
 const TodoList: FC<TodoListPropsType> = (props) => {
-debugger
   let tasksList = props.tasks.length ? (
     props.tasks.map((task: TaskType) => {
       const removeTask = () => props.removeTask(props.id, task.id);
