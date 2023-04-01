@@ -38,7 +38,7 @@ export const tasksReducer = (state: TodlistTaskType, action: MainActionType): To
       return {...state, [action.payload.todolistId]: state[action.payload.todolistId].map(task => task.id === action.payload.taskId ? {...task, title: action.payload.newTitle} : task)}
     }
     case ADD_TODOLIST: {
-      return {[action.payload.newTodolistId]: [], ...state }    
+      return {...state, [action.payload.newTodolistId]: [] }    
     }
     case REMOVE_TODOLIST: {
       const stateCopy = {...state}
