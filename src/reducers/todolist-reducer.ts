@@ -12,9 +12,10 @@ export const REMOVE_TODOLIST = 'REMOVE-TODOLIST'
 export const ADD_TODOLIST = 'ADD-TODOLIST'
 const CHANGE_FILTER = 'CHANGE-FILTER'
 const EDIT_TODOLIST = 'EDIT-TODOLIST'
+const initialState: TodolistsType[] = []
 
 
-export const todolistsReducer = (state: TodolistsType[], action: MainActionType): TodolistsType[] => {
+export const todolistsReducer = (state: TodolistsType[] = initialState, action: MainActionType): TodolistsType[] => {
   switch(action.type) {
     case REMOVE_TODOLIST: {
       return state.filter(todolist => todolist.id !== action.payload.todolistId)

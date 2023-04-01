@@ -16,9 +16,10 @@ const ADD_TASK = 'ADD-TASK'
 const CHANGE_TASK_STATUS = 'CHANGE-TASK-STATUS'
 const EDIT_TASK = 'EDIT-TASK'
 // const ADD_TASK_FOR_NEW_TODO = 'ADD-TASK-FOR-NEW-TODO'
+const initialState:TodlistTaskType = {}
 
 
-export const tasksReducer = (state: TodlistTaskType, action: MainActionType): TodlistTaskType => {
+export const tasksReducer = (state: TodlistTaskType = initialState, action: MainActionType): TodlistTaskType => {
   switch(action.type) {
     case REMOVE_TASK: {
       return {...state, [action.payload.todolistId]: state[action.payload.todolistId].filter(task => task.id !== action.payload.taskId)}
