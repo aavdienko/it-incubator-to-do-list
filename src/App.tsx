@@ -78,8 +78,9 @@ const App = () => {
   });
 
   const removeTodolist = (todolistId: string) => {
-    dispatchTasks(removeTodolistAC(todolistId))
-    dispatchTodolists(removeTodolistAC(todolistId))
+    let action = removeTodolistAC(todolistId)
+    dispatchTasks(action)
+    dispatchTodolists(action)
 
     // setTodolists(todolists.filter((todolist) => todolist.id !== todolistId));
     // delete tasks[todolistId];
@@ -87,9 +88,9 @@ const App = () => {
   };
 
   const addTodolist = (newTitle: string) => {
-    debugger
-    dispatchTasks(addTodolistAC(newTitle))
-    dispatchTodolists(addTodolistAC(newTitle))
+    let action = addTodolistAC(newTitle)
+    dispatchTasks(action)
+    dispatchTodolists(action)
 
 
     // const newTodolist: TodolistsType = {
