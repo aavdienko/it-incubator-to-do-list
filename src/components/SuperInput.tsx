@@ -1,13 +1,16 @@
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import { ChangeEvent, FC, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, useCallback, useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { log } from 'console';
+import React from 'react';
 
 type SuperInputPropsType = {
   callBack: (title: string) => void;
 };
 
-export const SuperInput: FC<SuperInputPropsType> = (props) => {
+export const SuperInput: FC<SuperInputPropsType> = React.memo( (props) => {
+  console.log('SuperInput')
   const [title, setTitle] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
 
@@ -63,7 +66,7 @@ export const SuperInput: FC<SuperInputPropsType> = (props) => {
       {/* {errorMessage} */}
     </div>
   );
-};
+})
 
 // variant="contained"
 // size="small"

@@ -8,6 +8,7 @@ import { addTodolistAC, } from './reducers/todolist-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './state/store';
 import { TodoListWithRedux } from './components/ToDoListWithRedux';
+import { useCallback } from 'react';
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 export type TodolistsType = {
@@ -17,13 +18,13 @@ export type TodolistsType = {
 };
 
 const AppWithRedux = () => {
-
+  console.log('app')
   const todolists = useSelector<AppRootStateType, Array<TodolistsType>>( state => state.todolists)
   const dispatch = useDispatch()
 
-  const addTodolist = (newTitle: string) => {
+  const addTodolist = useCallback((newTitle: string) => {
     dispatch(addTodolistAC(newTitle))
-  }; 
+  }, []); 
 
   return (
     <div className="App">
